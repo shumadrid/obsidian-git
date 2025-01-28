@@ -3,6 +3,7 @@ import deepEqual from "deep-equal";
 import type { App, RGB, WorkspaceLeaf } from "obsidian";
 import { Keymap, Menu, moment } from "obsidian";
 import { BINARY_EXTENSIONS } from "./constants";
+import pathUtil from "path";
 
 export const worthWalking = (filepath: string, root?: string) => {
     if (filepath === "." || root == null || root.length === 0 || root === ".") {
@@ -161,6 +162,20 @@ export function formatMinutes(minutes: number): string {
 export function getExtensionFromPath(path: string): string {
     const dotIndex = path.lastIndexOf(".");
     return path.substring(dotIndex + 1);
+}
+
+export function getExtensionFromPath(filePath: string): string {
+    // Handles the case where there's a dot in a folder name in the path, 
+    // and the file has no extension
+	const normalizedPath = pathUtil.normalize(filePath); 
+	const segments = normalizedPath.split(pathUtil.sep); 
+	const fileName = segments.pop() || ""; 
+
+	const dotIndex = fileName.lastIndexOf(".");
+	if (dotIndex === -1 || dotIndex === fileName.length - 1) {
+		return "";
+	}
+	return fileName.substring(dotIndex + 1);
 }
 
 /**
