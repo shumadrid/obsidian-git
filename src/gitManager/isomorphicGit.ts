@@ -762,6 +762,19 @@ export class IsomorphicGit extends GitManager {
         );
     }
 
+    async removeFileFromCache(
+        filepath: string,
+        relativeToVault: boolean
+    ): Promise<void> {
+        const gitPath = this.getRelativeRepoPath(filepath, relativeToVault);
+        await this.wrapFS(
+            git.remove({
+                ...this.getRepo(),
+                filepath: gitPath,
+            })
+        );
+    }
+
     async getRemoteUrl(remote: string): Promise<string | undefined> {
         return (
             await this.wrapFS(git.listRemotes({ ...this.getRepo() }))

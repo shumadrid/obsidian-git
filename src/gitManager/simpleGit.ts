@@ -870,6 +870,14 @@ export class SimpleGit extends GitManager {
         await this.git.removeRemote(remoteName);
     }
 
+    async removeFileFromCache(
+        filepath: string,
+        relativeToVault: boolean
+    ): Promise<void> {
+        const gitPath = this.getRelativeRepoPath(filepath, relativeToVault);
+        await this.git.rmKeepLocal(gitPath);
+    }
+
     async updateUpstreamBranch(remoteBranch: string) {
         try {
             // git 1.8+

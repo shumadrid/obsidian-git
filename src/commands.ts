@@ -136,7 +136,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "add-to-gitignore",
-        name: "Add file to .gitignore",
+        name: "Add file to .gitignore & remove from cache",
         checkCallback: (checking) => {
             const file = app.workspace.getActiveFile();
             if (checking) {

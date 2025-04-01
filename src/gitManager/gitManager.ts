@@ -96,6 +96,11 @@ export abstract class GitManager {
 
     abstract removeRemote(remoteName: string): Promise<void>;
 
+    abstract removeFileFromCache(
+        filepath: string,
+        relativeToVault: boolean
+    ): Promise<void>;
+
     abstract updateUpstreamBranch(remoteBranch: string): Promise<void>;
 
     abstract updateGitPath(gitPath: string): Promise<void>;

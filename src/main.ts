@@ -341,6 +341,19 @@ export default class ObsidianGit extends Plugin {
             this.gitManager.getRelativeVaultPath(".gitignore"),
             "\n" + gitignoreRule
         );
+
+        try {
+            await this.gitManager.removeFileFromCache(gitRelativePath, false);
+        } catch (error) {
+            if (
+                error instanceof Error &&
+                error.message.includes("did not match")
+            ) {
+                this.displayMessage(`File ${filePath} is already untracked.`);
+            } else {
+                throw error;
+            }
+        }
         return this.refresh();
     }
 
@@ -402,7 +415,7 @@ export default class ObsidianGit extends Plugin {
                     });
             });
             menu.addItem((item) => {
-                item.setTitle(`Git: Add to .gitignore`)
+                item.setTitle(`Add to .gitignore & untrack`)
                     .setIcon("file-x")
                     .setSection("action")
                     .onClick((_) => {
@@ -416,7 +429,7 @@ export default class ObsidianGit extends Plugin {
 
         if (source == "git-source-control") {
             menu.addItem((item) => {
-                item.setTitle(`Git: Add to .gitignore`)
+                item.setTitle(`Add to .gitignore & untrack`)
                     .setIcon("file-x")
                     .setSection("action")
                     .onClick((_) => {
